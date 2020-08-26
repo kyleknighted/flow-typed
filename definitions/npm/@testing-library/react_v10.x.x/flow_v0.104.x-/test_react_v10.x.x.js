@@ -11,16 +11,18 @@ import {
   waitForElement,
   waitForElementToBeRemoved,
   within,
+  screen,
+  getNodeText,
 } from '@testing-library/react';
 import { describe, it } from 'flow-typed-test';
 
 describe('act', () => {
   it('should fail on invalid inputs', () => {
-    // $ExpectError
+    // $FlowExpectedError
     act(1);
-    // $ExpectError
+    // $FlowExpectedError
     act(() => {}, 1);
-    // $ExpectError
+    // $FlowExpectedError
     act(() => 1);
   });
 
@@ -33,30 +35,27 @@ describe('act', () => {
   });
 
   it('should fail on incorrect usage of result', () => {
-    // $ExpectError
+    // $FlowExpectedError
     act(() => {}) + 1;
-    // $ExpectError
+    // $FlowExpectedError
     act(() => {}).doesNotExist();
-    // $ExpectError
+    // $FlowExpectedError
     act(() => {}).then(1);
-    // $ExpectError
+    // $FlowExpectedError
     act(() => {}).then(() => {}, 1);
   });
 
   it('should pass on correct usage of result', () => {
     act(() => {}).then(() => {});
-    act(() => {}).then(
-      () => {},
-      () => {}
-    );
+    act(() => {}).then(() => {}, () => {});
   });
 });
 
 describe('waitFor', () => {
   it('should fail on invalid inputs', () => {
-    // $ExpectError
+    // $FlowExpectedError
     waitFor(1);
-    // $ExpectError
+    // $FlowExpectedError
     waitFor(() => {}, 1);
   });
 
@@ -68,9 +67,9 @@ describe('waitFor', () => {
 
 describe('waitForDomChange', () => {
   it('should fail on invalid inputs', () => {
-    // $ExpectError
+    // $FlowExpectedError
     waitForDomChange(1);
-    // $ExpectError
+    // $FlowExpectedError
     waitForDomChange('1');
   });
 
@@ -82,9 +81,9 @@ describe('waitForDomChange', () => {
 
 describe('waitForElement', () => {
   it('should fail on invalid inputs', () => {
-    // $ExpectError
+    // $FlowExpectedError
     waitForElement(1);
-    // $ExpectError
+    // $FlowExpectedError
     waitForElement(() => {}, 1);
   });
 
@@ -107,9 +106,7 @@ describe('waitForElement', () => {
 
 describe('waitForElementToBeRemoved', () => {
   it('should fail on invalid inputs', () => {
-    // $ExpectError
-    waitForElementToBeRemoved(1);
-    // $ExpectError
+    // $FlowExpectedError
     waitForElementToBeRemoved(() => {}, 1);
   });
 
@@ -151,76 +148,84 @@ describe('render', () => {
     getAllByAltText,
     queryByAltText,
     queryAllByAltText,
+    findByAltText,
+    findAllByAltText,
     getByDisplayValue,
     getAllByDisplayValue,
     queryByDisplayValue,
     queryAllByDisplayValue,
+    findByDisplayValue,
+    findAllByDisplayValue,
     getByLabelText,
     getAllByLabelText,
     queryByLabelText,
     queryAllByLabelText,
+    findByLabelText,
+    findAllByLabelText,
     getByPlaceholderText,
     getAllByPlaceholderText,
     queryByPlaceholderText,
     queryAllByPlaceholderText,
+    findByPlaceholderText,
+    findAllByPlaceholderText,
     getByRole,
     getAllByRole,
     queryByRole,
     queryAllByRole,
-    getBySelectText,
-    getAllBySelectText,
-    queryBySelectText,
-    queryAllBySelectText,
+    findByRole,
+    findAllByRole,
     getByTestId,
     getAllByTestId,
     queryByTestId,
     queryAllByTestId,
+    findByTestId,
+    findAllByTestId,
     getByText,
     getAllByText,
     queryByText,
     queryAllByText,
+    findByText,
+    findAllByText,
     getByTitle,
     getAllByTitle,
     queryByTitle,
     queryAllByTitle,
-    getByValue,
-    getAllByValue,
-    queryByValue,
-    queryAllByValue,
+    findByTitle,
+    findAllByTitle,
   } = render(<Component />);
 
   it('unmount should has 0 arguments', () => {
     unmount();
-    // $ExpectError
+    // $FlowExpectedError
     unmount(1);
   });
 
   it('container should be an html element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: number = container;
     const b: HTMLElement = container;
   });
 
   it('baseElement should be an html element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: number = baseElement;
     const b: HTMLElement = baseElement;
   });
 
   it('asFragment should return a document fragment', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: HTMLElement = asFragment();
     const b: DocumentFragment = asFragment();
   });
 
   it('debug maybe has 1 argument an html element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     debug(1);
     debug(container);
   });
 
   it('rerender should has 1 argument an react element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     rerender();
     rerender(<Component />);
   });
@@ -230,21 +235,33 @@ describe('render', () => {
   });
 
   it('getAllByAltText should return array of HTML element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: HTMLElement = getAllByAltText('1');
     const b: Array<HTMLElement> = getAllByAltText('2');
   });
 
   it('queryByAltText should return maybe HTML element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: HTMLElement = queryByAltText('1');
     const b: ?HTMLElement = queryByAltText('2');
   });
 
   it('queryAllByAltText should return array of HTML element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: HTMLElement = queryAllByAltText('1');
     const b: Array<HTMLElement> = queryAllByAltText('2');
+  });
+
+  it('findByAltText should return HTML element', () => {
+    // $FlowExpectedError
+    const a: HTMLElement = findByAltText('1');
+    const b: Promise<HTMLElement> = findByAltText('1');
+  });
+
+  it('findAllByAltText should return array of HTML element', () => {
+    // $FlowExpectedError
+    const a: Promise<HTMLElement> = findAllByAltText('1');
+    const b: Promise<Array<HTMLElement>> = findAllByAltText('2');
   });
 
   it('getByDisplayValue should return HTML element', () => {
@@ -252,21 +269,33 @@ describe('render', () => {
   });
 
   it('getAllByDisplayValue should return array of HTML element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: HTMLElement = getAllByDisplayValue('1');
     const b: Array<HTMLElement> = getAllByDisplayValue('2');
   });
 
   it('queryByDisplayValue should return maybe HTML element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: HTMLElement = queryByDisplayValue('1');
     const b: ?HTMLElement = queryByDisplayValue('2');
   });
 
   it('queryAllByDisplayValue should return array of HTML element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: HTMLElement = queryAllByDisplayValue('1');
     const b: Array<HTMLElement> = queryAllByDisplayValue('2');
+  });
+
+  it('findByDisplayValue should return HTML element', () => {
+    // $FlowExpectedError
+    const a: HTMLElement = findByDisplayValue('1');
+    const b: Promise<HTMLElement> = findByDisplayValue('1');
+  });
+
+  it('findAllByDisplayValue should return array of HTML element', () => {
+    // $FlowExpectedError
+    const a: Promise<HTMLElement> = findAllByDisplayValue('1');
+    const b: Promise<Array<HTMLElement>> = findAllByDisplayValue('2');
   });
 
   it('getByLabelText should return HTML element', () => {
@@ -274,21 +303,33 @@ describe('render', () => {
   });
 
   it('getAllByLabelText should return array of HTML element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: HTMLElement = getAllByLabelText('1');
     const b: Array<HTMLElement> = getAllByLabelText('2');
   });
 
   it('queryByLabelText should return maybe HTML element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: HTMLElement = queryByLabelText('1');
     const b: ?HTMLElement = queryByLabelText('2');
   });
 
   it('queryAllByLabelText should return array of HTML element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: HTMLElement = queryAllByLabelText('1');
     const b: Array<HTMLElement> = queryAllByLabelText('2');
+  });
+
+  it('findByLabelText should return HTML element', () => {
+    // $FlowExpectedError
+    const a: HTMLElement = findByLabelText('1');
+    const b: Promise<HTMLElement> = findByLabelText('1');
+  });
+
+  it('findAllByLabelText should return array of HTML element', () => {
+    // $FlowExpectedError
+    const a: Promise<HTMLElement> = findAllByLabelText('1');
+    const b: Promise<Array<HTMLElement>> = findAllByLabelText('2');
   });
 
   it('getByPlaceholderText should return HTML element', () => {
@@ -296,65 +337,69 @@ describe('render', () => {
   });
 
   it('getAllByPlaceholderText should return array of HTML element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: HTMLElement = getAllByPlaceholderText('1');
     const b: Array<HTMLElement> = getAllByPlaceholderText('2');
   });
 
   it('queryByPlaceholderText should return maybe HTML element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: HTMLElement = queryByPlaceholderText('1');
     const b: ?HTMLElement = queryByPlaceholderText('2');
   });
 
   it('queryAllByPlaceholderText should return array of HTML element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: HTMLElement = queryAllByPlaceholderText('1');
     const b: Array<HTMLElement> = queryAllByPlaceholderText('2');
   });
 
+  it('findByPlaceholderText should return HTML element', () => {
+    // $FlowExpectedError
+    const a: HTMLElement = findByPlaceholderText('1');
+    const b: Promise<HTMLElement> = findByPlaceholderText('1');
+  });
+
+  it('findAllByPlaceholderText should return array of HTML element', () => {
+    // $FlowExpectedError
+    const a: Promise<HTMLElement> = findAllByPlaceholderText('1');
+    const b: Promise<Array<HTMLElement>> = findAllByPlaceholderText('2');
+  });
+
   it('getByRole should return HTML element', () => {
-    const a: HTMLElement = getByRole('1');
+    // $FlowExpectedError
+    const a: string = getByRole('1');
+    const b: HTMLElement = getByRole('1');
   });
 
   it('getAllByRole should return array of HTML element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: HTMLElement = getAllByRole('1');
     const b: Array<HTMLElement> = getAllByRole('2');
   });
 
   it('queryByRole should return maybe HTML element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: HTMLElement = queryByRole('1');
     const b: ?HTMLElement = queryByRole('2');
   });
 
   it('queryAllByRole should return array of HTML element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: HTMLElement = queryAllByRole('1');
     const b: Array<HTMLElement> = queryAllByRole('2');
   });
 
-  it('getBySelectText should return HTML element', () => {
-    const a: HTMLElement = getBySelectText('1');
+  it('findByRole should return HTML element', () => {
+    // $FlowExpectedError
+    const a: HTMLElement = findByRole('1');
+    const b: Promise<HTMLElement> = findByRole('1');
   });
 
-  it('getAllBySelectText should return array of HTML element', () => {
-    // $ExpectError
-    const a: HTMLElement = getAllBySelectText('1');
-    const b: Array<HTMLElement> = getAllBySelectText('2');
-  });
-
-  it('queryBySelectText should return maybe HTML element', () => {
-    // $ExpectError
-    const a: HTMLElement = queryBySelectText('1');
-    const b: ?HTMLElement = queryBySelectText('2');
-  });
-
-  it('queryAllBySelectText should return array of HTML element', () => {
-    // $ExpectError
-    const a: HTMLElement = queryAllBySelectText('1');
-    const b: Array<HTMLElement> = queryAllBySelectText('2');
+  it('findAllByRole should return array of HTML element', () => {
+    // $FlowExpectedError
+    const a: Promise<HTMLElement> = findAllByRole('1');
+    const b: Promise<Array<HTMLElement>> = findAllByRole('2');
   });
 
   it('getByTestId should return HTML element', () => {
@@ -362,21 +407,33 @@ describe('render', () => {
   });
 
   it('getAllByTestId should return array of HTML element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: HTMLElement = getAllByTestId('1');
     const b: Array<HTMLElement> = getAllByTestId('2');
   });
 
   it('queryByTestId should return maybe HTML element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: HTMLElement = queryByTestId('1');
     const b: ?HTMLElement = queryByTestId('2');
   });
 
   it('queryAllByTestId should return array of HTML element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: HTMLElement = queryAllByTestId('1');
     const b: Array<HTMLElement> = queryAllByTestId('2');
+  });
+
+  it('findByTestId should return HTML element', () => {
+    // $FlowExpectedError
+    const a: HTMLElement = findByTestId('1');
+    const b: Promise<HTMLElement> = findByTestId('1');
+  });
+
+  it('findAllByTestId should return array of HTML element', () => {
+    // $FlowExpectedError
+    const a: HTMLElement = findAllByTestId('1');
+    const b: Promise<Array<HTMLElement>> = findAllByTestId('2');
   });
 
   it('getByText should return HTML element', () => {
@@ -384,21 +441,33 @@ describe('render', () => {
   });
 
   it('getAllByText should return array of HTML element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: HTMLElement = getAllByText('1');
     const b: Array<HTMLElement> = getAllByText('2');
   });
 
   it('queryByText should return maybe HTML element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: HTMLElement = queryByText('1');
     const b: ?HTMLElement = queryByText('2');
   });
 
   it('queryAllByText should return array of HTML element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: HTMLElement = queryAllByText('1');
     const b: Array<HTMLElement> = queryAllByText('2');
+  });
+
+  it('findByText should return HTML element', () => {
+    // $FlowExpectedError
+    const a: HTMLElement = findByText('1');
+    const b: Promise<HTMLElement> = findByText('1');
+  });
+
+  it('findAllByText should return array of HTML element', () => {
+    // $FlowExpectedError
+    const a: Promise<HTMLElement> = findAllByText('1');
+    const b: Promise<Array<HTMLElement>> = findAllByText('2');
   });
 
   it('getByTitle should return HTML element', () => {
@@ -406,50 +475,40 @@ describe('render', () => {
   });
 
   it('getAllByTitle should return array of HTML element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: HTMLElement = getAllByTitle('1');
     const b: Array<HTMLElement> = getAllByTitle('2');
   });
 
   it('queryByTitle should return maybe HTML element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: HTMLElement = queryByTitle('1');
     const b: ?HTMLElement = queryByTitle('2');
   });
 
   it('queryAllByTitle should return array of HTML element', () => {
-    // $ExpectError
+    // $FlowExpectedError
     const a: HTMLElement = queryAllByTitle('1');
     const b: Array<HTMLElement> = queryAllByTitle('2');
   });
 
-  it('getByValue should return HTML element', () => {
-    const a: HTMLElement = getByValue('1');
+  it('findByTitle should return HTML element', () => {
+    // $FlowExpectedError
+    const a: HTMLElement = findByTitle('1');
+    const b: Promise<HTMLElement> = findByTitle('1');
   });
 
-  it('getAllByValue should return array of HTML element', () => {
-    // $ExpectError
-    const a: HTMLElement = getAllByValue('1');
-    const b: Array<HTMLElement> = getAllByValue('2');
-  });
-
-  it('queryByValue should return maybe HTML element', () => {
-    // $ExpectError
-    const a: HTMLElement = queryByValue('1');
-    const b: ?HTMLElement = queryByValue('2');
-  });
-
-  it('queryAllByValue should return array of HTML element', () => {
-    // $ExpectError
-    const a: HTMLElement = queryAllByValue('1');
-    const b: Array<HTMLElement> = queryAllByValue('2');
+  it('findAllByTitle should return array of HTML element', () => {
+    // $FlowExpectedError
+    const a: HTMLElement = findAllByTitle('1');
+    const b: Promise<Array<HTMLElement>> = findAllByTitle('2');
   });
 });
 
 describe('cleanup', () => {
   it('should be a function w/o arguments', () => {
     cleanup();
-    // $ExpectError
+    // $FlowExpectedError
     cleanup(1);
   });
 });
@@ -459,7 +518,7 @@ describe('within', () => {
   const { container } = render(<Component />);
 
   it('should has html element as argument', () => {
-    // $ExpectError
+    // $FlowExpectedError
     within();
     within(container);
   });
@@ -480,6 +539,14 @@ describe('within', () => {
     within(container).queryAllByAltText('1');
   });
 
+  it('should have findByAltText', async () => {
+    await within(container).findByAltText('1');
+  });
+
+  it('should have findAllByAltText', async () => {
+    await within(container).findAllByAltText('1');
+  });
+
   it('should have getByDisplayValue', () => {
     within(container).getByDisplayValue('1');
   });
@@ -494,6 +561,14 @@ describe('within', () => {
 
   it('should have queryAllByDisplayValue', () => {
     within(container).queryAllByDisplayValue('1');
+  });
+
+  it('should have findByDisplayValue', async () => {
+    await within(container).findByDisplayValue('1');
+  });
+
+  it('should have findAllByDisplayValue', async () => {
+    await within(container).findAllByDisplayValue('1');
   });
 
   it('should have getByLabelText', () => {
@@ -512,6 +587,14 @@ describe('within', () => {
     within(container).queryAllByLabelText('1');
   });
 
+  it('should have findByLabelText', async () => {
+    await within(container).findByLabelText('1');
+  });
+
+  it('should have findAllByLabelText', async () => {
+    await within(container).findAllByLabelText('1');
+  });
+
   it('should have getByPlaceholderText', () => {
     within(container).getByPlaceholderText('1');
   });
@@ -526,6 +609,14 @@ describe('within', () => {
 
   it('should have queryAllByPlaceholderText', () => {
     within(container).queryAllByPlaceholderText('1');
+  });
+
+  it('should have findByPlaceholderText', async () => {
+    await within(container).findByPlaceholderText('1');
+  });
+
+  it('should have findAllByPlaceholderText', async () => {
+    await within(container).findAllByPlaceholderText('1');
   });
 
   it('should have getByRole', () => {
@@ -544,20 +635,12 @@ describe('within', () => {
     within(container).queryAllByRole('1');
   });
 
-  it('should have getBySelectText', () => {
-    within(container).getBySelectText('1');
+  it('should have findByRole', async () => {
+    await within(container).findByRole('1');
   });
 
-  it('should have getAllBySelectText', () => {
-    within(container).getAllBySelectText('1');
-  });
-
-  it('should have queryBySelectText', () => {
-    within(container).queryBySelectText('1');
-  });
-
-  it('should have queryAllBySelectText', () => {
-    within(container).queryAllBySelectText('1');
+  it('should have findAllByRole', async () => {
+    await within(container).findAllByRole('1');
   });
 
   it('should have getByTestId', () => {
@@ -576,6 +659,14 @@ describe('within', () => {
     within(container).queryAllByTestId('1');
   });
 
+  it('should have findByTestId', async () => {
+    await within(container).findByTestId('1');
+  });
+
+  it('should have findAllByTestId', async () => {
+    await within(container).findAllByTestId('1');
+  });
+
   it('should have getByText', () => {
     within(container).getByText('1');
   });
@@ -590,6 +681,14 @@ describe('within', () => {
 
   it('should have queryAllByText', () => {
     within(container).queryAllByText('1');
+  });
+
+  it('should have findByText', async () => {
+    await within(container).findByText('1');
+  });
+
+  it('should have findAllByText', async () => {
+    await within(container).findAllByText('1');
   });
 
   it('should have getByTitle', () => {
@@ -608,20 +707,94 @@ describe('within', () => {
     within(container).queryAllByTitle('1');
   });
 
-  it('should have getByValue', () => {
-    within(container).getByValue('1');
+  it('should have findByTitle', async () => {
+    await within(container).findByTitle('1');
   });
 
-  it('should have getAllByValue', () => {
-    within(container).getAllByValue('1');
+  it('should have findAllByTitle', async () => {
+    await within(container).findAllByTitle('1');
   });
 
-  it('should have queryByValue', () => {
-    within(container).queryByValue('1');
+  it('should have getByDisplayValue', () => {
+    within(container).getByDisplayValue('1');
   });
 
-  it('should have queryAllByValue', () => {
-    within(container).queryAllByValue('1');
+  it('should have getAllByDisplayValue', () => {
+    within(container).getAllByDisplayValue('1');
+  });
+
+  it('should have queryByDisplayValue', () => {
+    within(container).queryByDisplayValue('1');
+  });
+
+  it('should have queryAllByDisplayValue', () => {
+    within(container).queryAllByDisplayValue('1');
+  });
+
+  it('should have findByDisplayValue', async () => {
+    await within(container).findByDisplayValue('1');
+  });
+
+  it('should have findAllByDisplayValue', async () => {
+    await within(container).findAllByDisplayValue('1');
+  });
+});
+
+describe('screen', () => {
+  it('should have all the queries available', () => {
+    // $FlowExpectedError
+    const { notAQuery } = screen;
+    const {
+      debug,
+      getByAltText,
+      getAllByAltText,
+      queryByAltText,
+      queryAllByAltText,
+      findByAltText,
+      findAllByAltText,
+      getByDisplayValue,
+      getAllByDisplayValue,
+      queryByDisplayValue,
+      queryAllByDisplayValue,
+      findByDisplayValue,
+      findAllByDisplayValue,
+      getByLabelText,
+      getAllByLabelText,
+      queryByLabelText,
+      queryAllByLabelText,
+      findByLabelText,
+      findAllByLabelText,
+      getByPlaceholderText,
+      getAllByPlaceholderText,
+      queryByPlaceholderText,
+      queryAllByPlaceholderText,
+      findByPlaceholderText,
+      findAllByPlaceholderText,
+      getByRole,
+      getAllByRole,
+      queryByRole,
+      queryAllByRole,
+      findByRole,
+      findAllByRole,
+      getByTestId,
+      getAllByTestId,
+      queryByTestId,
+      queryAllByTestId,
+      findByTestId,
+      findAllByTestId,
+      getByText,
+      getAllByText,
+      queryByText,
+      queryAllByText,
+      findByText,
+      findAllByText,
+      getByTitle,
+      getAllByTitle,
+      queryByTitle,
+      queryAllByTitle,
+      findByTitle,
+      findAllByTitle,
+    } = screen;
   });
 });
 
@@ -639,9 +812,9 @@ describe('fireEvent', () => {
   });
 
   it('should throw on invalid arguments', () => {
-    // $ExpectError
+    // $FlowExpectedError
     fireEvent(1);
-    // $ExpectError
+    // $FlowExpectedError
     fireEvent(htmlEl, 1);
   });
 
@@ -718,6 +891,15 @@ describe('fireEvent', () => {
   });
 });
 
+describe('getNodeText', () => {
+  class Component extends React.Component<{ ... }> {};
+  const { container } = render(<Component />);
+
+  it('should return string', () => {
+    const a: string = getNodeText(container);
+  });
+});
+
 describe('text matching API', () => {
   class Component extends React.Component<{ ... }> {}
   const {
@@ -725,42 +907,50 @@ describe('text matching API', () => {
     getAllByAltText,
     queryByAltText,
     queryAllByAltText,
+    findByAltText,
+    findAllByAltText,
     getByDisplayValue,
     getAllByDisplayValue,
     queryByDisplayValue,
     queryAllByDisplayValue,
+    findByDisplayValue,
+    findAllByDisplayValue,
     getByLabelText,
     getAllByLabelText,
     queryByLabelText,
     queryAllByLabelText,
+    findByLabelText,
+    findAllByLabelText,
     getByPlaceholderText,
     getAllByPlaceholderText,
     queryByPlaceholderText,
     queryAllByPlaceholderText,
+    findByPlaceholderText,
+    findAllByPlaceholderText,
     getByRole,
     getAllByRole,
     queryByRole,
     queryAllByRole,
-    getBySelectText,
-    getAllBySelectText,
-    queryBySelectText,
-    queryAllBySelectText,
+    findByRole,
+    findAllByRole,
     getByTestId,
     getAllByTestId,
     queryByTestId,
     queryAllByTestId,
+    findByTestId,
+    findAllByTestId,
     getByText,
     getAllByText,
     queryByText,
     queryAllByText,
+    findByText,
+    findAllByText,
     getByTitle,
     getAllByTitle,
     queryByTitle,
     queryAllByTitle,
-    getByValue,
-    getAllByValue,
-    queryByValue,
-    queryAllByValue,
+    findByTitle,
+    findAllByTitle,
   } = render(<Component />);
 
   it('getByAltText should accept text match arguments', () => {
@@ -976,48 +1166,6 @@ describe('text matching API', () => {
     const result: Array<HTMLElement> = queryAllByRole('1');
   });
 
-  it('getBySelectText should accept text match arguments', () => {
-    getBySelectText('1');
-    getBySelectText('1', { trim: true, collapseWhitespace: true, exact: true });
-    getBySelectText(/1/);
-    getBySelectText(/1/, { trim: true, collapseWhitespace: true, exact: true });
-    getBySelectText((content: string, element) => true);
-    getBySelectText((content: string, element) => true, {
-      trim: true,
-      collapseWhitespace: true,
-      exact: true,
-    });
-  });
-
-  it('getAllBySelectText should accept text match arguments', () => {
-    const result: Array<HTMLElement> = getAllBySelectText('1');
-  });
-
-  it('queryBySelectText should accept text match arguments', () => {
-    queryBySelectText('1');
-    queryBySelectText('1', {
-      trim: true,
-      collapseWhitespace: true,
-      exact: true,
-    });
-    queryBySelectText(/1/);
-    queryBySelectText(/1/, {
-      trim: true,
-      collapseWhitespace: true,
-      exact: true,
-    });
-    queryBySelectText((content: string, element) => true);
-    queryBySelectText((content: string, element) => true, {
-      trim: true,
-      collapseWhitespace: true,
-      exact: true,
-    });
-  });
-
-  it('queryAllBySelectText should accept text match arguments', () => {
-    const result: Array<HTMLElement> = queryAllBySelectText('1');
-  });
-
   it('getByTestId should accept text match arguments', () => {
     getByTestId('1');
     getByTestId('1', { trim: true, collapseWhitespace: true, exact: true });
@@ -1121,40 +1269,6 @@ describe('text matching API', () => {
   it('queryAllByTitle should accept text match arguments', () => {
     const result: Array<HTMLElement> = queryAllByTitle('1');
   });
-
-  it('getByValue should accept text match arguments', () => {
-    getByValue('1');
-    getByValue('1', { trim: true, collapseWhitespace: true, exact: true });
-    getByValue(/1/);
-    getByValue(/1/, { trim: true, collapseWhitespace: true, exact: true });
-    getByValue((content: string, element) => true);
-    getByValue((content: string, element) => true, {
-      trim: true,
-      collapseWhitespace: true,
-      exact: true,
-    });
-  });
-
-  it('getAllByValue should accept text match arguments', () => {
-    const result: Array<HTMLElement> = getAllByValue('1');
-  });
-
-  it('queryByValue should accept text match arguments', () => {
-    queryByValue('1');
-    queryByValue('1', { trim: true, collapseWhitespace: true, exact: true });
-    queryByValue(/1/);
-    queryByValue(/1/, { trim: true, collapseWhitespace: true, exact: true });
-    queryByValue((content: string, element) => true);
-    queryByValue((content: string, element) => true, {
-      trim: true,
-      collapseWhitespace: true,
-      exact: true,
-    });
-  });
-
-  it('queryAllByValue should accept text match arguments', () => {
-    const result: Array<HTMLElement> = queryAllByValue('1');
-  });
 });
 
 describe('render() parameters', () => {
@@ -1179,11 +1293,11 @@ describe('render() parameters', () => {
     };
     const result = render(<Component />, { queries: customQueries });
     const a: CustomReturnType = result.getByOverride('something');
-    // $ExpectError bad type for getByOverride parameter
+    // $FlowExpectedError bad type for getByOverride parameter
     result.getByOverride(1234);
-    // $ExpectError missing getByOverride parameter
+    // $FlowExpectedError missing getByOverride parameter
     result.getByOverride();
-    // $ExpectError default queries are not available when using custom queries
+    // $FlowExpectedError default queries are not available when using custom queries
     result.getByTestId('indifferent');
   });
 });
